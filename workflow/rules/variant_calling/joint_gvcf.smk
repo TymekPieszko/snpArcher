@@ -91,6 +91,7 @@ rule joint_genotype_gvcfs:
             -V gendb://"$EXTRACT_DIR/{params.db_rel}" \
             -O {output.vcf} \
             --tmp-dir {resources.tmpdir} \
+            --include-non-variant-sites true \
             &> {log}
         """
 

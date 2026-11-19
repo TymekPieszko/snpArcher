@@ -82,6 +82,7 @@ rule gatk_haplotypecaller_interval:
         ploidy=config["variant_calling"]["ploidy"],
         min_pruning=HC_MIN_PRUNING,
         min_dangling=HC_MIN_DANGLING,
+        gq_bands=" ".join(f"--gvcf-gq-bands {i}" for i in range(1, 100)),
     threads: 1
     conda:
         "../../envs/gatk.yaml"
@@ -102,7 +103,9 @@ rule gatk_haplotypecaller_interval:
         --native-pair-hmm-threads {threads} \
         --emit-ref-confidence GVCF \
         --min-pruning {params.min_pruning} \
-        --min-dangling-branch-length {params.min_dangling} &> {log}
+        --min-dangling-branch-length {params.min_dangling} \
+        --do-not-run-physical-phasing true \
+        {params.gq_bands} &> {log}
         """
 
 
